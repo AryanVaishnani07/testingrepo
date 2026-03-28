@@ -1,63 +1,26 @@
-name: python ci piplines 
+test:
+  runs-on: ubuntu-latest
+  needs: lint
 
-on: [push]
+  steps:
+    - name: Checkout Code
+      uses: actions/checkout@v4
 
-jobs:
-  lint:
-    runs-on: ubuntu-latest
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
 
-    steps:
-      - name: checkout code 
-        uses: actions/checkout@v4
+    - name: Cache pip
+      uses: actions/cache@v4
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
 
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: install dependencies
-        run: pip install -r requirements.txt
+    - name: Install Dependencies
+      run: pip install -r requirements.txt
 
-      - name: lint code 
-        run: flake8 .
-  
-  test:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: checkout code 
-        uses: actions/checkout@v4
-
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: install dependencies
-        run: pip install -r requirements.txt
-
-      - name: lint code 
-        run: flake8 .
-
-      - name: run tests 
-        run: pytest
-      
-      - name: Run the script 
-        run: python app.py
-
-  run:
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: checkout code 
-        uses: actions/checkout@v4
-
-      - name: setup python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-      
-      - name: Run the script 
-        run: python app.py
-
-      
+    - name: Run Tests
+      run: pytest
