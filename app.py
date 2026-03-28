@@ -1,2 +1,6 @@
-def add(a, b):
-    return a + b
+def add(a,b):
+    return a+b
+
+if __name_ == "__main__":
+    result = add(2,3)
+    print("Result: ",result)
