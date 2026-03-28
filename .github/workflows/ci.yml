@@ -16,6 +16,6 @@ jobs:
           python-version: '3.11'
       
       - name: Run the script 
-        uses: python app.py
+        run: python app.py
 
       
