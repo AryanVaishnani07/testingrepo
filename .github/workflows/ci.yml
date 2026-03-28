@@ -15,6 +15,9 @@ jobs:
         with:
           python-version: '3.11'
       
+      - name: install dependencies
+        run: python install -r requirements.txt
+      
       - name: Run the script 
         run: python app.py
 
